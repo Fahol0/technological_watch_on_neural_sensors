@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mind Map Interactive</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      background: #f9f9f9;
+      text-align: center;
+    }
+
+    svg {
+      display: block;
+      margin: 20px auto;
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .node circle {
+      fill: #69b3a2;
+      stroke: #555;
+      stroke-width: 2px;
+      transition: all 0.3s ease;
+    }
+
+    .node circle:hover {
+      fill: #40a1b0;
+      stroke: #222;
+    }
+
+    .node text {
+      font-size: 12px;
+      font-weight: bold;
+      fill: #333;
+      text-anchor: middle;
+    }
+
+    .link {
+      fill: none;
+      stroke: #ccc;
+      stroke-width: 2px;
+    }
+
+    #details {
+      background: #fff;
+      padding: 20px;
+      margin: 10px auto;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      display: inline-block;
+      width: 90%;
+      max-width: 600px;
+    }
+
+    #details h2 {
+      font-size: 18px;
+      margin: 0;
+      color: #69b3a2;
+    }
+
+    #details p {
+      font-size: 14px;
+      color: #555;
+    }
+
+    #details img {
+      max-width: 100%;
+      margin-top: 10px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    #details .no-data {
+      color: #999;
+      font-style: italic;
+    }
+  </style>
+</head>
+<body>
+  <svg width="800" height="800"></svg>
+  <div id="details">
+    <h2>Détails du nœud</h2>
+    <p id="node-details" class="no-data">Cliquez sur un nœud pour voir les détails.</p>
+    <img id="node-image" style="display: none;" alt="Illustration du nœud" />
+  </div>
+
+  <script src="mindmap.js"></script>
+</body>
+</html>
