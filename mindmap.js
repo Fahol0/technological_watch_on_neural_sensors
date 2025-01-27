@@ -382,6 +382,12 @@ function updateNodeTextVisibility(zoomLevel, targetNode = null, depth = 0) {
     });
 }
 
+const getNodeColor = (depth) => {
+  const maxDepth = 4;
+  const intensity = 255 - (depth / maxDepth) * 200;
+  return `rgb(${intensity}, ${intensity}, 255)`;
+};
+
 const width = window.innerWidth;
 const height = 750;
 
@@ -433,6 +439,9 @@ const nodes = g
 nodes
   .append("circle")
   .attr("r", (d) => 20 - d.depth * 4)
+  .attr("fill", (d) => getNodeColor(d.depth))
+  .attr("stroke", "#555")
+  .attr("stroke-width", 2)
   .on("mouseover", function () {
       d3.select(this).transition().duration(5).attr("r", 25);
   })
@@ -460,7 +469,7 @@ nodes
         .append("p")
         .text(d.data.details)
         .style("font-size", "14px")
-        .style("color", "#222");
+        .style("color", "#e0f7fa");
     } else {
       detailsDiv.append("p").text("Pas de détails disponibles.");
     }
@@ -493,30 +502,30 @@ nodes
 .style("font-family", "Arial")
 .style("opacity", 0)
 .clone(true)
-.lower()
-.attr("stroke", "white");
+.lower();
 
 let isZoomed = false;
 let depth = 0;
 
 d3.selectAll('.node')
   .on('click', function (event, d) {
-    if (isZoomed) {
+    if (isZoomed && d === targetNode) {
       const resetTransform = d3.zoomIdentity.translate(0, 0).scale(1);
       svg.transition().duration(750).call(zoom.transform, resetTransform);
       isZoomed = false;
       updateNodeTextVisibility(1);
+      targetNode = null;
     } else {
       const [x, y] = radialPoint(d.x, d.y);
       const transform = d3.zoomIdentity
         .translate(width / 4 - (x * 2 + 500), height / 4 - (y * 3 + 100))
         .scale(3);
-
       svg.transition().duration(750).call(zoom.transform, transform);
       isZoomed = true;
+      targetNode = d;
       depth = d.depth;
       updateNodeTextVisibility(3, d, depth);
-    }
-  });
+    }    
+  }); 
 
 updateNodeTextVisibility(1);
