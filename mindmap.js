@@ -337,24 +337,30 @@ const data = {
   ],
 };
 
+function updateNodeTextVisibility(zoomLevel) {
+  d3.selectAll('.node text')
+    .style('opacity', function () {
+      return zoomLevel > 1.5 ? 1 : 0;
+    });
+}
+
 const width = window.innerWidth;
-const height = 800;
+const height = 750;
 
 const svg = d3.select("svg")
 .attr("width", width)
 .attr("height", height)
-.attr("viewBox", [-width / 2, -height / 2, width, height])
-.style("background", "#fff");
+.attr("viewBox", [-width / 2, -height / 2, width, height]);
 
 const g = svg.append("g");
 
 const zoom = d3.zoom()
-  .scaleExtent([0.5, 5])
+  .scaleExtent([1, 5])
   .on("zoom", (event) => {
     g.attr("transform", event.transform);
   });
 
-svg.call(zoom);
+svg.call(zoom).on("wheel.zoom", null);
 
 const tree = d3.tree().size([2 * Math.PI, Math.min(width, height) / 2]);
 const root = d3.hierarchy(data);
@@ -389,10 +395,10 @@ nodes
   .append("circle")
   .attr("r", (d) => 20 - d.depth * 5)
   .on("mouseover", function () {
-      d3.select(this).transition().duration(300).attr("r", 25);
+      d3.select(this).transition().duration(5).attr("r", 25);
   })
   .on("mouseout", function () {
-      d3.select(this).transition().duration(300).attr("r", (d) => 20 - d.depth * 5);
+      d3.select(this).transition().duration(5).attr("r", (d) => 20 - d.depth * 5);
   })
   .on("click", (event, d) => {
     const detailsDiv = d3.select("#node-details");
@@ -415,7 +421,7 @@ nodes
         .append("p")
         .text(d.data.details)
         .style("font-size", "14px")
-        .style("color", "#555");
+        .style("color", "#aaa");
     } else {
       detailsDiv.append("p").text("Pas de détails disponibles.");
     }
@@ -433,3 +439,24 @@ nodes
 .clone(true)
 .lower()
 .attr("stroke", "white");
+
+let currentZoomNode = null;
+
+d3.selectAll('.node')
+  .on('click', function (event, d) {
+    if (currentZoomNode === d) {
+      const resetTransform = d3.zoomIdentity.translate(0, 0).scale(1);
+      svg.transition().duration(750).call(zoom.transform, resetTransform);
+      currentZoomNode = null;
+      updateNodeTextVisibility(1);
+    } else {
+      const [x, y] = radialPoint(d.x, d.y);
+      const transform = d3.zoomIdentity
+        .translate(width / 2 - x * 2, height / 2 - y * 2)
+        .scale(2);
+
+      svg.transition().duration(750).call(zoom.transform, transform);
+      currentZoomNode = d;
+      updateNodeTextVisibility(2);
+    }
+  });
