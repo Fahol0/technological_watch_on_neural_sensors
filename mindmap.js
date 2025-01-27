@@ -20,7 +20,9 @@ const data = {
             },
             {
               name: "Position sur la tête",
-              image: "path/to/image/position_sur_la_tete.png"
+              image: "./images/eeg.png",
+              details:
+                "Emplacement des électrodes EEG sur la tête.",
             },
             {
               name: "Caractéristiques techniques",
@@ -56,7 +58,9 @@ const data = {
             },
             {
               name: "Position sur la tête",
-              image: "path/to/image/position_sur_la_tete.png"
+              image: "./images/meg.png",
+              details:
+                "Emplacement des capteurs MEG sur la tête."
             },
             {
               name: "Caractéristiques techniques",
@@ -92,7 +96,9 @@ const data = {
             },
             {
               name: "Position sur la tête",
-              image: "path/to/image/position_sur_la_tete.png"
+              image: "./images/fnirs.png",
+              details:
+                "Emplacement des capteurs fNIRS sur la tête."
             },
             {
               name: "Caractéristiques techniques",
@@ -128,7 +134,9 @@ const data = {
             },
             {
               name: "Position sur le corps",
-              image: "path/to/image/position_sur_le_corps.png"
+              image: "./images/emg.png",
+              details:
+                "Emplacement des électrodes EMG sur le corps."
             },
             {
               name: "Caractéristiques techniques",
@@ -178,7 +186,9 @@ const data = {
             },
             {
               name: "Position sur le cerveau",
-              image: "path/to/image/position_sur_le_cerveau.png"
+              image: "./images/ecog.png",
+              details:
+                "Emplacement des électrodes ECoG sur le cortex cérébral."
             },
             {
               name: "Caractéristiques techniques",
@@ -221,7 +231,9 @@ const data = {
             },
             {
               name: "Position sur le cerveau",
-              image: "path/to/image/position_sur_le_cerveau.png"
+              image: "./images/lfp.png",
+              details:
+                "Emplacement des électrodes LFP dans le cerveau."
             },
             {
               name: "Caractéristiques techniques",
@@ -257,7 +269,9 @@ const data = {
             },
             {
               name: "Position sur le cerveau",
-              image: "path/to/image/position_sur_le_cerveau.png"
+              image: "./images/neuralink.png",
+              details:
+                "Emplacement des électrodes intracorticales de Neuralink dans le cortex cérébral. (avec évolution, avec cables visibles en 2020 et sans cables en 2021)"
             },
             {
               name: "Caractéristiques techniques",
@@ -300,7 +314,9 @@ const data = {
             },
             {
               name: "Position sur le cerveau",
-              image: "path/to/image/position_sur_le_cerveau.png"
+              image: "./images/dust.png",
+              details:
+                "Emplacement des micro-capteurs Neural Dust dans le cerveau."
             },
             {
               name: "Caractéristiques techniques",
@@ -336,7 +352,9 @@ const data = {
             },
             {
               name: "Position sur le cerveau",
-              image: "path/to/image/position_sur_le_cerveau.png"
+              image: "./images/optogenique.png",
+              details:
+                "Emplacement des fibres optiques pour la stimulation optogénétique."
             },
             {
               name: "Caractéristiques techniques",
@@ -374,7 +392,7 @@ function updateNodeTextVisibility(zoomLevel, targetNode = null, depth = 0) {
       if (zoomLevel === 1 && d.depth <= 1) {
         return 1;
       } else if (zoomLevel === 3) {
-        if (d.depth === depth || depth === 3 && d.depth >= 3) {
+        if (d.depth === depth || depth === 3 && d.depth >= 3 || depth === 2 && (d.depth === 2 || d.depth === 3)) {
           return 1;
         }
       }
