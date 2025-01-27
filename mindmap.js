@@ -1,11 +1,17 @@
 const data = {
   name: "Capteurs neuronaux",
+  details:
+    "Les capteurs neuronaux sont des dispositifs qui mesurent l'activité électrique du cerveau ou des nerfs. Ils sont utilisés en neurosciences, en médecine et dans les interfaces cerveau-ordinateur. Il existe plusieurs types de capteurs, allant des capteurs de surface non-invasifs aux capteurs intracorticaux invasifs.",
   children: [
     {
       name: "Capteurs de surface (non-invasifs)",
+      details:
+        "Les capteurs de surface sont placés à l'extérieur du crâne et mesurent l'activité électrique du cerveau à travers le cuir chevelu. Ils sont utilisés pour des applications comme les interfaces cerveau-ordinateur, les études sur le sommeil et le diagnostic de l'épilepsie.",
       children: [
         {
           name: "Capteurs pour Électroencéphalographie (EEG)",
+          details:
+            "Pour comprendre les détails de ce type de capteurs, cliquez sur les noeuds enfants",
           children: [
             {
               name: "Principe de fonctionnement",
@@ -40,6 +46,8 @@ const data = {
         },
         { 
           name: "Capteurs pour Magnétoencéphalographie (MEG)",
+          detail:
+            "Pour comprendre les détails de ce type de capteurs, cliquez sur les noeuds enfants",
           children: [
             {
               name: "Principe de fonctionnement",
@@ -74,6 +82,8 @@ const data = {
         },
         { 
           name: "Spectroscopie proche infrarouge fonctionnelle (fNIRS)",
+          detail:
+            "Pour comprendre les détails de ce type de capteurs, cliquez sur les noeuds enfants",
           children: [
             {
               name: "Principe de fonctionnement",
@@ -108,6 +118,8 @@ const data = {
         },
         { 
           name: "Électromyographie (EMG)",
+          details:
+            "Pour comprendre les détails de ce type de capteurs, cliquez sur les noeuds enfants",
           children: [
             {
               name: "Principe de fonctionnement",
@@ -144,9 +156,13 @@ const data = {
     },
     {
       name: "Capteurs intracrâniens (semi-invasifs)",
+      details:
+        "Les capteurs intracrâniens sont placés à l'intérieur du crâne, mais à l'extérieur du cerveau. Ils sont utilisés pour des applications cliniques et de recherche nécessitant une meilleure résolution spatiale que les capteurs de surface.",
       children: [
         { 
           name: "Électrocorticographie (ECoG)",
+          details:
+            "Pour comprendre les détails de ce type de capteurs, cliquez sur les noeuds enfants",
           children: [
             {
               name: "Principe de fonctionnement",
@@ -190,9 +206,13 @@ const data = {
     },
     {
       name: "Capteurs intracorticaux (invasifs)",
+      details:
+        "Les capteurs intracorticaux sont implantés directement dans le cerveau pour mesurer l'activité électrique des neurones. Ils sont utilisés pour des applications de recherche et cliniques nécessitant une très haute résolution spatiale et temporelle.",
       children: [
         {
           name: "Local Field Potential (LFP)",
+          details:
+            "Pour comprendre les détails de ce type de capteurs, cliquez sur les noeuds enfants",
           children: [
             {
               name: "Principe de fonctionnement",
@@ -227,6 +247,8 @@ const data = {
         },
         { 
           name: "Électrodes intracorticales (e.g., Neuralink)",
+          details:
+            "Pour comprendre les détails de ce type de capteurs, cliquez sur les noeuds enfants",
           children: [
             {
               name: "Principe de fonctionnement",
@@ -263,9 +285,13 @@ const data = {
     },
     {
       name: "Capteurs miniaturisés (non-invasifs)",
+      details:
+        "Les capteurs miniaturisés sont des dispositifs sans fil et non invasifs qui peuvent être injectés dans le cerveau pour mesurer l'activité neuronale. Ils sont utilisés pour des applications de neurostimulation, de surveillance des pathologies neurologiques et d'interfaces cerveau-ordinateur.",
       children: [
         { 
           name: "Micro-capteurs sans fil (e.g., Neural Dust)",
+          details:
+            "Pour comprendre les détails de ce type de capteurs, cliquez sur les noeuds enfants",
           children: [
             {
               name: "Principe de fonctionnement",
@@ -300,6 +326,8 @@ const data = {
         },
         { 
           name: "Simulation lumineuse des neurones (e.g., Optogénique)",
+          details:
+            "Pour comprendre les détails de ce type de capteurs, cliquez sur les noeuds enfants",
           children: [
             {
               name: "Principe de fonctionnement",
@@ -337,10 +365,20 @@ const data = {
   ],
 };
 
-function updateNodeTextVisibility(zoomLevel) {
+function updateNodeTextVisibility(zoomLevel, targetNode = null, depth = 0) {
   d3.selectAll('.node text')
-    .style('opacity', function () {
-      return zoomLevel > 1.5 ? 1 : 0;
+    .style('opacity', function (d) {
+      if (targetNode && d === targetNode) {
+        return 1;
+      }
+      if (zoomLevel === 1 && d.depth <= 1) {
+        return 1;
+      } else if (zoomLevel === 3) {
+        if (d.depth === depth || depth === 3 && d.depth >= 3) {
+          return 1;
+        }
+      }
+      return 0;
     });
 }
 
@@ -361,6 +399,7 @@ const zoom = d3.zoom()
   });
 
 svg.call(zoom).on("wheel.zoom", null);
+svg.on("dblclick.zoom", null);
 
 const tree = d3.tree().size([2 * Math.PI, Math.min(width, height) / 2]);
 const root = d3.hierarchy(data);
@@ -393,12 +432,12 @@ const nodes = g
 
 nodes
   .append("circle")
-  .attr("r", (d) => 20 - d.depth * 5)
+  .attr("r", (d) => 20 - d.depth * 4)
   .on("mouseover", function () {
       d3.select(this).transition().duration(5).attr("r", 25);
   })
   .on("mouseout", function () {
-      d3.select(this).transition().duration(5).attr("r", (d) => 20 - d.depth * 5);
+      d3.select(this).transition().duration(5).attr("r", (d) => 20 - d.depth * 4);
   })
   .on("click", (event, d) => {
     const detailsDiv = d3.select("#node-details");
@@ -421,7 +460,7 @@ nodes
         .append("p")
         .text(d.data.details)
         .style("font-size", "14px")
-        .style("color", "#aaa");
+        .style("color", "#222");
     } else {
       detailsDiv.append("p").text("Pas de détails disponibles.");
     }
@@ -429,34 +468,55 @@ nodes
 
 nodes
 .append("text")
-.attr("x", (d) => (d.x < Math.PI ? 25 : -25))
-.attr("y", 0)
+.attr("x", (d) => {
+  if ((d.x * 180) / Math.PI === 180) {
+    return 0;
+  } else if (d.depth === 4) {
+    return 10;
+  }
+  return d.x < Math.PI ? 25 : -25;
+})
+.attr("y", (d) => ((d.x * 180) / Math.PI === 180 ? -20 : 0))
 .attr("dy", "0.31em")
-.style("text-anchor", (d) => (d.x < Math.PI ? "start" : "end"))
+.style("text-anchor", (d) =>
+  (d.x * 180) / Math.PI === 180 ? "middle" : d.x < Math.PI ? "start" : "end"
+)
+.attr("transform", (d) => {
+  const angle = (d.x * 180) / Math.PI - 90;
+  if ((d.x * 180) / Math.PI === 180 || d.depth === 0 || d.depth === 4) {
+    return null;
+  }
+  return `rotate(${angle > 90 ? angle - 180 : angle})`;
+})
 .text((d) => d.data.name)
 .style("font-size", "12px")
 .style("font-family", "Arial")
+.style("opacity", 0)
 .clone(true)
 .lower()
 .attr("stroke", "white");
 
-let currentZoomNode = null;
+let isZoomed = false;
+let depth = 0;
 
 d3.selectAll('.node')
   .on('click', function (event, d) {
-    if (currentZoomNode === d) {
+    if (isZoomed) {
       const resetTransform = d3.zoomIdentity.translate(0, 0).scale(1);
       svg.transition().duration(750).call(zoom.transform, resetTransform);
-      currentZoomNode = null;
+      isZoomed = false;
       updateNodeTextVisibility(1);
     } else {
       const [x, y] = radialPoint(d.x, d.y);
       const transform = d3.zoomIdentity
-        .translate(width / 2 - x * 2, height / 2 - y * 2)
-        .scale(2);
+        .translate(width / 4 - (x * 2 + 500), height / 4 - (y * 3 + 100))
+        .scale(3);
 
       svg.transition().duration(750).call(zoom.transform, transform);
-      currentZoomNode = d;
-      updateNodeTextVisibility(2);
+      isZoomed = true;
+      depth = d.depth;
+      updateNodeTextVisibility(3, d, depth);
     }
   });
+
+updateNodeTextVisibility(1);
