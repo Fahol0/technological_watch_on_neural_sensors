@@ -454,6 +454,8 @@ const nodes = g
       return `translate(${x},${y})`;
   });
 
+let selectedNode = null;
+
 nodes
   .append("circle")
   .attr("r", (d) => 20 - d.depth * 4)
@@ -467,6 +469,23 @@ nodes
       d3.select(this).transition().duration(5).attr("r", (d) => 20 - d.depth * 4);
   })
   .on("click", (event, d) => {
+    const clickedCircle = d3.select(event.currentTarget);
+
+    if (selectedNode === d) {
+        clickedCircle.attr("fill", getNodeColor(d.depth));
+        selectedNode = null;
+    } else {
+        if (selectedNode) {
+            d3.selectAll(".node circle").each(function (nodeData) {
+                if (nodeData === selectedNode) {
+                    d3.select(this).attr("fill", getNodeColor(nodeData.depth));
+                }
+            });
+        }
+        clickedCircle.attr("fill", "green");
+        selectedNode = d;
+    }
+
     const detailsDiv = d3.select("#node-details");
     detailsDiv.html("");
   
@@ -519,6 +538,7 @@ nodes
 .style("font-size", "12px")
 .style("font-family", "Arial")
 .style("opacity", 0)
+.style("pointer-events", "none")
 .clone(true)
 .lower();
 
