@@ -392,7 +392,7 @@ function updateNodeTextVisibility(zoomLevel, targetNode = null, depth = 0) {
       if (zoomLevel === 1 && d.depth <= 1) {
         return 1;
       } else if (zoomLevel === 3) {
-        if (d.depth === depth || depth === 3 && d.depth >= 3 || depth === 2 && (d.depth === 2 || d.depth === 3)) {
+        if (d.depth === depth || depth === 3 && d.depth === 2 || d.depth === depth + 1) {
           return 1;
         }
       }
@@ -407,11 +407,11 @@ const getNodeColor = (depth) => {
 };
 
 const width = window.innerWidth;
-const height = 750;
+const height = window.innerHeight;
 
 const svg = d3.select("svg")
 .attr("width", width)
-.attr("height", height)
+.attr("height", 0.75 * height)
 .attr("viewBox", [-width / 2, -height / 2, width, height]);
 
 const g = svg.append("g");
@@ -556,7 +556,7 @@ d3.selectAll('.node')
     } else {
       const [x, y] = radialPoint(d.x, d.y);
       const transform = d3.zoomIdentity
-        .translate(width / 4 - (x * 2 + 500), height / 4 - (y * 3 + 100))
+        .translate((2 * (- x)), (3 * (- y)))
         .scale(3);
       svg.transition().duration(750).call(zoom.transform, transform);
       isZoomed = true;
