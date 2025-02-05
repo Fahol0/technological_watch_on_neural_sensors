@@ -48,7 +48,7 @@ const data = {
         },
         { 
           name: "Capteurs pour Magnétoencéphalographie (MEG)",
-          detail:
+          details:
             "Pour comprendre les détails de ce type de capteurs, cliquez sur les noeuds enfants",
           children: [
             {
@@ -86,7 +86,7 @@ const data = {
         },
         { 
           name: "Spectroscopie proche infrarouge fonctionnelle (fNIRS)",
-          detail:
+          details:
             "Pour comprendre les détails de ce type de capteurs, cliquez sur les noeuds enfants",
           children: [
             {
