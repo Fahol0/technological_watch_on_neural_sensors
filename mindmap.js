@@ -10,6 +10,7 @@ const data = {
       children: [
         {
           name: "Capteurs pour Électroencéphalographie (EEG)",
+          url: "https://en.wikipedia.org/wiki/Electroencephalography",
           details:
             "Pour comprendre les détails de ce type de capteurs, cliquez sur les noeuds enfants",
           children: [
@@ -48,6 +49,7 @@ const data = {
         },
         { 
           name: "Capteurs pour Magnétoencéphalographie (MEG)",
+          url: "https://en.wikipedia.org/wiki/Magnetoencephalography",
           details:
             "Pour comprendre les détails de ce type de capteurs, cliquez sur les noeuds enfants",
           children: [
@@ -86,6 +88,7 @@ const data = {
         },
         { 
           name: "Spectroscopie proche infrarouge fonctionnelle (fNIRS)",
+          url: "https://en.wikipedia.org/wiki/Functional_near-infrared_spectroscopy",
           details:
             "Pour comprendre les détails de ce type de capteurs, cliquez sur les noeuds enfants",
           children: [
@@ -124,6 +127,7 @@ const data = {
         },
         { 
           name: "Électromyographie (EMG)",
+          url: "https://en.wikipedia.org/wiki/Electromyography",
           details:
             "Pour comprendre les détails de ce type de capteurs, cliquez sur les noeuds enfants",
           children: [
@@ -169,6 +173,7 @@ const data = {
       children: [
         { 
           name: "Électrocorticographie (ECoG)",
+          url: "https://en.wikipedia.org/wiki/Electrocorticography",
           details:
             "Pour comprendre les détails de ce type de capteurs, cliquez sur les noeuds enfants",
           children: [
@@ -179,6 +184,7 @@ const data = {
                 children: [
                   {
                     name: "Dure-mère",
+                    url: "https://fr.wikipedia.org/wiki/Dure-m%C3%A8re",
                     details:
                       "Membrane fibreuse qui entoure le cerveau. Protège le cerveau des infections et des chocs."
                   }
@@ -221,6 +227,7 @@ const data = {
       children: [
         {
           name: "Local Field Potential (LFP)",
+          url: "https://en.wikipedia.org/wiki/Local_field_potential",
           details:
             "Pour comprendre les détails de ce type de capteurs, cliquez sur les noeuds enfants",
           children: [
@@ -259,6 +266,7 @@ const data = {
         },
         { 
           name: "Électrodes intracorticales (e.g., Neuralink)",
+          url: "https://en.wikipedia.org/wiki/Neurotrophic_electrode",
           details:
             "Pour comprendre les détails de ce type de capteurs, cliquez sur les noeuds enfants",
           children: [
@@ -304,6 +312,7 @@ const data = {
       children: [
         { 
           name: "Micro-capteurs sans fil (e.g., Neural Dust)",
+          url: "https://en.wikipedia.org/wiki/Neural_dust",
           details:
             "Pour comprendre les détails de ce type de capteurs, cliquez sur les noeuds enfants",
           children: [
@@ -342,6 +351,7 @@ const data = {
         },
         { 
           name: "Simulation lumineuse des neurones (e.g., Optogénique)",
+          url: "https://en.wikipedia.org/wiki/Optogenetics",
           details:
             "Pour comprendre les détails de ce type de capteurs, cliquez sur les noeuds enfants",
           children: [
@@ -510,6 +520,12 @@ nodes
     } else {
       detailsDiv.append("p").text("Pas de détails disponibles.");
     }
+
+    if (d.data.url) {
+      detailsDiv
+        .append("p")
+        .html(`<a href="${d.data.url}" target="_blank" style="color: #00bcd4; text-decoration: none;">Voir la source</a>`);
+    }    
   });
 
 nodes
